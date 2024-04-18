@@ -27,6 +27,12 @@ if __name__ == "__main__":
 			if isanemail(address):
 				print("The email address is valid.")
 				print("Trying to reaching server...")
+				doesItExist, message = isemailexist(address)
+
+				if doesItExist:
+					print("Email address is valid.")
+				else:
+					print(message)
 
 			else:
 				print("Control the given address")
@@ -36,6 +42,37 @@ if __name__ == "__main__":
 
 	else:
 		print("No address mail was given.")
+
+def isemailexist (address):
+	"""
+		Try to connect with the server and to contact the endpoint.
+	"""
+	domain = address.split('@')[1]
+
+    try:
+  
+        server = smtplib.SMTP(domain)
+        server.set_debuglevel(0)  
+ 
+        code, message = server.verify(address)
+
+        server.quit()
+
+        if code == 250:
+            return True, "Email address exists"
+        else:
+            return False, f"Email address does not exist (error code: {code}, message: {message})"
+    except smtplib.SMTPServerDisconnected:
+        return False, "SMTP server disconnected"
+    except smtplib.SMTPConnectError:
+        return False, "Failed to connect to SMTP server"
+    except smtplib.SMTPHeloError:
+        return False, "SMTP server did not reply properly to the HELO greeting"
+    except smtplib.SMTPDataError:
+        return False, "SMTP server replied with an unexpected error code"
+    except Exception as e:
+        return False, f"An error occurred: {e}"
+
 
 def isanemail(address): -> bool
 	"""
