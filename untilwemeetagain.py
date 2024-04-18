@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(prog="Illu",
                         description="Process the given email, or the given file.\
                         Accepted(xlsx)")
 
-parser.add_argument('email', nargs='*', default='None')
+parser.add_argument('address_email', type=str, metavar="address",nargs='+', default='None')
 
 if __name__ == "__main__":
 
@@ -20,6 +20,23 @@ if __name__ == "__main__":
 		The purpose of this script is to extract mail address and test with an
 		STMP validation if the email seems to exist.
 	"""
+
+	args = parser.parse_args()
+
+	if args != None:
+
+		if len(args) == 1:
+
+			if isanemail(address):
+
+			else:
+				print("Control the given address")
+
+		else:
+			print("Too many address were given.")
+
+	else:
+		print("No address mail was given.")
 
 def isanemail(address): -> bool
 	"""
