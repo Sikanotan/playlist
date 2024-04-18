@@ -1,16 +1,13 @@
 import os
 import argparse
-import re
-
 
 cwd_directory = os.path.dirname(os.path.realpath(__file__))
 os.chdir(cwd_directory)
 
 
 # Arguments
-parser = argparse.ArgumentParser(prog="Illu",
-                        description="Process the given email, or the given file.\
-                        Accepted(xlsx)")
+parser = argparse.ArgumentParser(prog="Is my address mail valid ?",
+                        description="Process the given email")
 
 parser.add_argument('address_email', type=str, metavar="address",nargs='+', default='None')
 
@@ -28,6 +25,8 @@ if __name__ == "__main__":
 		if len(args) == 1:
 
 			if isanemail(address):
+				print("The email address is valid.")
+				print("Trying to reaching server...")
 
 			else:
 				print("Control the given address")
@@ -44,6 +43,8 @@ def isanemail(address): -> bool
 		https://www.w3.org/Protocols/rfc822/
 
 		local-part@domain
+
+		Could be done with a regex
 	"""
 	# The special char are unauthorized execept .
 	address_validity = False
@@ -90,7 +91,11 @@ def isanemail(address): -> bool
 			else:
 				char_valid = True
 
-		address_validity = True
+		if "." in domain:
+
+			address_validity = True
+		else:
+			error_message = "The given address is not valid."
 
 	else:
 
